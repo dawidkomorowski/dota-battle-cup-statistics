@@ -11,9 +11,28 @@ namespace DotaBattleCupStatistics
     {
         private static readonly Uri BaseUrl = new("https://api.opendota.com/api/");
 
-        public static async Task<IEnumerable<OpenDotaMatch>> GetPublicMatches()
+        public static async Task<IEnumerable<OpenDotaMatch>> GetTop100LatestPublicMatches()
         {
             var apiUrl = new Uri(BaseUrl, "publicMatches");
+            var client = new HttpClient();
+            var result = await client.GetFromJsonAsync<IReadOnlyCollection<MatchDto>>(apiUrl);
+
+            if (result == null)
+            {
+                throw new InvalidOperationException($"Unexpected null value from API: {apiUrl.AbsoluteUri}");
+            }
+
+            return result.Select(dto => new OpenDotaMatch
+            {
+                MatchId = dto.Match_Id,
+                StartTime = UnixTimeStampToDateTime(dto.Start_Time),
+                LobbyType = ConvertLobbyType(dto.Lobby_Type)
+            });
+        }
+
+        public static async Task<IEnumerable<OpenDotaMatch>> Get100PublicMatchesBeforeMatchId(long matchId)
+        {
+            var apiUrl = new Uri(BaseUrl, $"publicMatches?less_than_match_id={matchId}");
             var client = new HttpClient();
             var result = await client.GetFromJsonAsync<IReadOnlyCollection<MatchDto>>(apiUrl);
 

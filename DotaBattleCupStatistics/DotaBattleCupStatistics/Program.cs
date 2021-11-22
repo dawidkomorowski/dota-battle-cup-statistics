@@ -7,7 +7,7 @@ namespace DotaBattleCupStatistics
     {
         private static async Task Main(string[] args)
         {
-            var matches = await OpenDotaClient.GetPublicMatches();
+            var matches = await OpenDotaClient.Get100PublicMatchesBeforeMatchId(6287642404);
             foreach (var match in matches)
             {
                 Console.WriteLine(match.ToString());
