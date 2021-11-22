@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DotaBattleCupStatistics
@@ -91,6 +92,8 @@ namespace DotaBattleCupStatistics
     {
         public long MatchId { get; init; }
         public DateTime StartTime { get; init; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public OpenDotaLobbyType LobbyType { get; init; }
     }
 
