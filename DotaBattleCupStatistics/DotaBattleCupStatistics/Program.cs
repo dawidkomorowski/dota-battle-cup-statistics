@@ -12,6 +12,8 @@ namespace DotaBattleCupStatistics
             {
                 Console.WriteLine(match.ToString());
             }
+
+            await LocalStorage.SaveMatches(matches);
         }
     }
 }
