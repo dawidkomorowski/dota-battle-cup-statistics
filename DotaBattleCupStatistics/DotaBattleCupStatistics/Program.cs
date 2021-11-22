@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace DotaBattleCupStatistics
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var matches = await OpenDotaClient.GetPublicMatches();
+            foreach (var match in matches)
+            {
+                Console.WriteLine(match.ToString());
+            }
         }
     }
 }
